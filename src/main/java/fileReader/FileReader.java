@@ -22,25 +22,6 @@ public class FileReader {
         return new File(classLoader.getResource(inputFileLocation).getFile());
     }
 
-    public String readFileIntoString(){
-        StringBuilder result = new StringBuilder("");
-
-        try (Scanner scanner = new Scanner(inputFile)) {
-
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                result.append(line).append("\n");
-            }
-
-            scanner.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return result.toString();
-    }
-
     public List<Integer> readFileIntoIntegerArrayList(){
         List<Integer> result = new ArrayList<>();
 
@@ -58,11 +39,27 @@ public class FileReader {
         }
 
         return result;
-
     }
 
+    public List<List<Integer>> readfileIntoListofIntArrays(){
+        List<List<Integer>> result = new ArrayList<>();
 
+        try (Scanner scanner = new Scanner(inputFile)) {
 
+            while(scanner.hasNextLine()){
+                String[] line = scanner.nextLine().split("\t");
+                List<Integer> numbers = new ArrayList<>();
+                for(String num : line){
+                    numbers.add(Integer.parseInt(num));
+                }
+                result.add(numbers);
+            }
+            scanner.close();
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+        return result;
+    }
 }
