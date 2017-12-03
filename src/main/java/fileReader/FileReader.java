@@ -62,4 +62,18 @@ public class FileReader {
 
         return result;
     }
+
+    public int ReadSingleIntegerValueFromFile(){
+        int result = 0;
+
+        try (Scanner scanner = new Scanner(inputFile)) {
+            result = scanner.nextInt();
+            scanner.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
 }
