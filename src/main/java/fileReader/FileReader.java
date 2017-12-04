@@ -63,6 +63,24 @@ public class FileReader {
         return result;
     }
 
+    public List<List<String>> readFileIntoListOfLines(){
+        List<List<String>> result = new ArrayList<>();
+
+        try (Scanner scanner = new Scanner(inputFile)){
+            while(scanner.hasNextLine()){
+                List<String> line = new ArrayList<>();
+                for(String word : scanner.nextLine().split(" ")){
+                    line.add(word);
+                }
+                result.add(line);
+            }
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return  result;
+    }
+
     public int ReadSingleIntegerValueFromFile(){
         int result = 0;
 
