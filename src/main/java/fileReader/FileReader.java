@@ -15,6 +15,7 @@ public class FileReader {
     public FileReader(String inputFileLocation) {
         this.inputFileLocation = inputFileLocation;
         this.inputFile = initFile();
+
     }
 
     private File initFile(){
@@ -40,6 +41,26 @@ public class FileReader {
 
         return result;
     }
+
+    public List<Integer> readLinesIntoIntegerArrayList(){
+        List<Integer> result = new ArrayList<>();
+
+        try (Scanner scanner = new Scanner(inputFile)) {
+
+            while (scanner.hasNextLine()) {
+                int num = Integer.parseInt(scanner.nextLine());
+                result.add(num);
+            }
+
+            scanner.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
 
     public List<List<Integer>> readfileIntoListofIntArrays(){
         List<List<Integer>> result = new ArrayList<>();
