@@ -5,16 +5,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 
 public class FileReader {
 
     private String inputFileLocation;
     private File inputFile;
+    private String defaultDelimiter;
 
     public FileReader(String inputFileLocation) {
         this.inputFileLocation = inputFileLocation;
         this.inputFile = initFile();
+        this.defaultDelimiter = "";
 
     }
 
@@ -23,11 +26,11 @@ public class FileReader {
         return new File(classLoader.getResource(inputFileLocation).getFile());
     }
 
-    public List<Integer> readFileIntoIntegerArrayList(){
+    public List<Integer> readFileIntoIntegerArrayList(String delimiter){
         List<Integer> result = new ArrayList<>();
 
         try (Scanner scanner = new Scanner(inputFile)) {
-            scanner.useDelimiter("");
+            scanner.useDelimiter(Pattern.compile(delimiter));
             while (scanner.hasNextInt()) {
                 int num = scanner.nextInt();
                 result.add(num);
@@ -40,6 +43,10 @@ public class FileReader {
         }
 
         return result;
+    }
+
+    public List<Integer> readFileIntoIntegerArrayList(){
+        return readFileIntoIntegerArrayList(defaultDelimiter);
     }
 
     public List<Integer> readLinesIntoIntegerArrayList(){
