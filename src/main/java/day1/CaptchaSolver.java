@@ -18,7 +18,6 @@ public class CaptchaSolver {
         for(int i=0; i < inputNumber.size(); i++){
             if(inputNumber.get(i).equals(inputNumber.get(wrapIndex(inputNumber.size(), i+jump)))){
                 sum+=inputNumber.get(i);
-                System.out.println("size: "+ inputNumber.size());
             }
 
         }
