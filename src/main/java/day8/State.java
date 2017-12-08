@@ -7,5 +7,6 @@ import java.util.Map;
 
 public class State {
     public Map<String, Register> registerMap = new HashMap<>();
-    List<Instruction> instructionList = new ArrayList<>();
+    public List<Instruction> instructionList = new ArrayList<>();
+
 }

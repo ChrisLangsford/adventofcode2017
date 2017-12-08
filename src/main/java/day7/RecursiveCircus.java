@@ -7,45 +7,41 @@ import java.util.*;
 public class RecursiveCircus {
     public static void main(String[] args){
         List<List<String>> input = new FileReader("input/day7-test.txt").readFileIntoListOfLines();
-        String root = findRootNode(input);
-        System.out.println("Root node:"+root);
-
-        Map<String, Node> tree = new HashMap<>();
-
-        for (List<String> nodeLine : input) {
-            Node node = new Node(nodeLine.get(0), Integer.parseInt(nodeLine.get(1)), nodeLine.subList(2,nodeLine.size()));
-            tree.put(nodeLine.get(0), node);
+        State state = new State();
+        for (List<String> lines : input) {
+            Node node = new Node(lines.get(0), Integer.parseInt(lines.get(1)), lines.subList(2,lines.size()));
+            if(node.children.size() > 0){
+                node.children.remove(0);
+            }
+            state.nodeMap.put(lines.get(0), node);
         }
 
-        System.out.println(tree.get("ugml").children);
-        //System.out.println(getTreeWeight(tree, "ugml"));
+        String root = findRootNode(input, state);
+        System.out.println("Root node: "+root);
+        System.out.println("========================================");
+
+        System.out.println(getTreeWeight("ugml", state));
     }
 
-    public static String findRootNode(List<List<String>> input){
-        String root = "";
-        Set<String> nodes = new HashSet<>();
-        Set<String> children = new HashSet<>();
+    public static String findRootNode(List<List<String>> input, State s){
+        Set<String> nodes = new HashSet<>(s.nodeMap.keySet());
+        Set<String> childNodes = new HashSet<>();
 
-        for (List<String> nodeLine : input) {
-            nodes.add(nodeLine.get(0));
-            for (String s : nodeLine.subList(2,nodeLine.size())) {
-                children.add(s);
+        for (Map.Entry<String,Node> entry : s.nodeMap.entrySet()) {
+            for (String child : entry.getValue().children) {
+                childNodes.add(child);
             }
         }
-
-        for (String node : nodes) {
-            if(!children.contains(node)){
-                root = node;
-            }
-        }
-        return root;
+        childNodes.removeAll(Arrays.asList("", null));
+        nodes.removeAll(childNodes);
+        return nodes.iterator().next();
     }
 
-    public static int getTreeWeight(Map<String, Node> tree, String root){
-        Node rootNode = tree.get(root);
+    public static int getTreeWeight(String root, State s){
+        Node rootNode = s.nodeMap.get(root);
         int weight = rootNode.weight;
         for (String child : rootNode.children) {
-            weight+= getTreeWeight(tree,child);
+            weight+= getTreeWeight(child, s);
         }
 
         return weight;
