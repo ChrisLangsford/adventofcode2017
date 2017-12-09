@@ -27,6 +27,19 @@ public class FileReader {
         return new File(classLoader.getResource(inputFileLocation).getFile());
     }
 
+    public String readFileIntoString(){
+        String result = "";
+
+        try (Scanner scanner = new Scanner(inputFile)) {
+            result = scanner.next();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result.trim();
+    }
+
     public List<Integer> readFileIntoIntegerArrayList(String delimiter){
         List<Integer> result = new ArrayList<>();
 
