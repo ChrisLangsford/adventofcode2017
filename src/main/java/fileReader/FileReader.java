@@ -136,4 +136,23 @@ public class FileReader {
 
         return result;
     }
+
+    public List<String> ReadCSVIntoStrings(){
+        List<String> result = new ArrayList<>();
+
+        try (Scanner scanner = new Scanner(inputFile)) {
+            scanner.useDelimiter(",");
+
+            while(scanner.hasNext()) {
+                result.add(scanner.next());
+            }
+
+            scanner.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
 }
