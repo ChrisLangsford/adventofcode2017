@@ -10,24 +10,18 @@ public class RecursiveCircus {
         State state = new State();
         for (List<String> lines : input) {
             Node node = new Node(lines.get(0), Integer.parseInt(lines.get(1)), lines.subList(2,lines.size()));
-            if(node.children.size() > 0){
-                node.children.remove(0);
-            }
-            state.nodeMap.put(lines.get(0), node);
+            state.nodeMap.put(node.name, node);
         }
 
 
 
-        //String root = findRootNode(input, state);
-        String root = "mkxke";
+        String root = findRootNode(state);
         System.out.println("Root node: "+root);
         System.out.println("========================================");
 
-        state.buildTreeFromRoot(root);
-
         Node unbalanced = state.nodeMap.get(recursiveTraverse(state.nodeMap.get(root),state));
 
-        Node unParent = getParentOfUnabalanced(unbalanced, state);
+        Node unParent = getParentOfUnbalanced(unbalanced, state);
 
         Set<Integer> childWeights = new HashSet<>();
         for (String child : unParent.children) {
@@ -39,11 +33,14 @@ public class RecursiveCircus {
         System.out.println("node: "+ unbalanced.name);
         System.out.println("weight: "+ unbalanced.weight);
         System.out.println("needs to be adjusted by");
-        System.out.println(weightList.get(0)-weightList.get(1));
+        int diff = weightList.get(0)-weightList.get(1);
+        System.out.println(diff);
+        int newWeight = unbalanced.weight + diff;
+        System.out.println("new weight: " + newWeight);
 
     }
 
-    public static Node getParentOfUnabalanced(Node un, State state){
+    public static Node getParentOfUnbalanced(Node un, State state){
         Node n = un;
         for (Map.Entry<String, Node> nodeEntry : state.nodeMap.entrySet()) {
 
@@ -57,17 +54,17 @@ public class RecursiveCircus {
 
 
 
-    public static String findRootNode(List<List<String>> input, State s){
+    public static String findRootNode(State s){
         Set<String> nodes = new HashSet<>(s.nodeMap.keySet());
         Set<String> childNodes = new HashSet<>();
 
-        for (Map.Entry<String,Node> entry : s.nodeMap.entrySet()) {
-            for (String child : entry.getValue().children) {
+        for (String node : s.nodeMap.keySet()) {
+            for (String child : s.nodeMap.get(node).children) {
                 childNodes.add(child);
             }
         }
-        childNodes.removeAll(Arrays.asList("", null));
         nodes.removeAll(childNodes);
+
         return nodes.iterator().next();
     }
 
@@ -130,9 +127,7 @@ public class RecursiveCircus {
         String name = root.name;
 
         if(!childTreesBalanced(state, root)){
-            //find unbalanced child
             name = recursiveTraverse(getUnbalancedChild(root,state), state);
-
         }
         return name;
     }

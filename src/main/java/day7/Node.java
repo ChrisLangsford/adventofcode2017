@@ -6,7 +6,6 @@ public class Node {
     public String name;
     public int weight;
     public List<String>children;
-    public int depth;
 
     public String getName() {
         return name;
@@ -32,19 +31,9 @@ public class Node {
         this.children = children;
     }
 
-
-    public int getDepth() {
-        return depth;
-    }
-
-    public void setDepth(int depth) {
-        this.depth = depth;
-    }
-
     public Node(String name, int weight, List<String> children) {
         this.name = name;
         this.weight = weight;
         this.children = children;
-
     }
 }
